@@ -14,7 +14,7 @@ func main() {
 		panic(err)
 	}
 	defer conn.Close()
-	client := pb.NewGreeterClient(conn)
-	result, err := client.SayHello(context.Background(), &pb.HelloRequest{Name: "李鹏"})
+	client := pb.NewTaskMasterClient(conn)
+	result, err := client.(context.Background(), &pb.HelloRequest{Name: "李鹏"})
 	fmt.Println(result.Message, err)
 }

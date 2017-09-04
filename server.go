@@ -4,7 +4,8 @@ import (
 	"flag"
 	"fmt"
 	"github.com/timeloveboy/taskmaster/pb"
-	"golang.org/x/net/context"
+
+	"github.com/timeloveboy/taskmaster/controller"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/grpclog"
@@ -18,15 +19,6 @@ var (
 	port     = flag.Int("port", 10000, "The server port")
 )
 
-type MoeGreeterServer struct {
-}
-
-func (this MoeGreeterServer) SayHello(ctx context.Context, req *pb.HelloRequest) (*pb.HelloReply, error) {
-	fmt.Println(req.Name)
-	return &pb.HelloReply{
-		Message: "你好",
-	}, nil
-}
 func main() {
 	flag.Parse()
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", *port))
@@ -42,7 +34,7 @@ func main() {
 		opts = []grpc.ServerOption{grpc.Creds(creds)}
 	}
 	grpcServer := grpc.NewServer(opts...)
-	pb.RegisterGreeterServer(grpcServer, MoeGreeterServer{})
+	pb.RegisterTaskMasterServer(grpcServer, controller.MoeTaskMasterServer{})
 	grpcServer.Serve(lis)
 
 }
