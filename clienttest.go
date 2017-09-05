@@ -15,6 +15,16 @@ func main() {
 	}
 	defer conn.Close()
 	client := pb.NewTaskMasterClient(conn)
-	result, err := client.(context.Background(), &pb.HelloRequest{Name: "李鹏"})
-	fmt.Println(result.Message, err)
+	connectcli, err := client.Connect(context.Background())
+	for {
+		connectcli.Send(&pb.OwnerState{
+			Owner:  "me",
+			TaskId: 1024,
+			Group:  "1024",
+		})
+		tr, err := connectcli.Recv()
+		fmt.Println(tr)
+
+	}
+
 }

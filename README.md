@@ -14,4 +14,8 @@
     + 1.worker负责具体执行任务
 + register
     + 1.register模块负责向jobmaster注册新任务,jobmaster可以控制register的数量,通常为1,防止重复添加任务
- 
+## 有状态服务
++ grpc长链接
++ node分配task,一致性hash
++ 增删node后,task转移策略
++ 负反馈机制,node上传当前任务负载,master动态调控.

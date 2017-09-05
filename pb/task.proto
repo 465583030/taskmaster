@@ -4,32 +4,23 @@ package pb;
 
 service TaskMaster {
     //Register 服务端向下推送,终止任务
-    rpc Register (Task) returns (Task) {}
-    //Stop 服务端向下推送,终止任务
-    rpc Stop (Owner) returns (stream GetTaskResp) {}
-    //Get 服务端向下推送,接收任务
-    rpc Get (Owner) returns (stream StopTaskResp) {}
+    rpc Register (Task) returns () {}
+
     //Report 客户端请求,续租任务
-    rpc Report (TaskState) returns (RespTask) {}
+    rpc Connect (stream OwnerState) returns (stream TaskResp) {}
 }
-message Owner {
+
+message OwnerState {
     string Owner=1;
     string Group=2;
-}
-message TaskState {
-    Owner Owner= 1;
-    Task Task= 2;
+    sint64 TaskId= 3;
 }
 message Task {
-    sint64 TaskId=1;
+    string Group=1;
+    sint64 TaskId=2;
 }
-message RespTask{
-    Task Task=1;
-    sint64 EnableSeconds=2;
-}
-message GetTaskResp {
-    RespTask RespTask =1;
-}
-message StopTaskResp {
-    Task Tasks =1;
+message TaskResp{
+    string Group=1;
+    sint64 TaskId=2;
+    sint64 EnableSeconds=3;
 }
