@@ -4,12 +4,14 @@ package pb;
 
 service TaskMaster {
     //Register 服务端向下推送,终止任务
-    rpc Register (Task) returns () {}
+    rpc Register (Task) returns (Null) {}
 
     //Report 客户端请求,续租任务
     rpc Connect (stream OwnerState) returns (stream TaskResp) {}
 }
+message Null{
 
+}
 message OwnerState {
     string Owner=1;
     string Group=2;
