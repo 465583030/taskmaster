@@ -4,6 +4,7 @@ import (
 	"github.com/timeloveboy/taskmaster/pb"
 
 	"fmt"
+	"github.com/pkg/errors"
 	"golang.org/x/net/context"
 	"time"
 )
@@ -51,14 +52,14 @@ func (ms MoeTaskMasterServer) Connect(cs pb.TaskMaster_ConnectServer) (err error
 		if err != nil {
 			return err
 		}
-		if ms.CheckOwner(os) {
-			return
+		if !ms.CheckOwner(os) {
+			return errors.New("you exist !")
 		}
 		fmt.Println("ownerstate", os)
 	}
 	return
 }
 
-func (this MoeTaskMasterServer) Register(ctx context.Context, req *pb.Task) (t *pb.Task, err error) {
+func (this MoeTaskMasterServer) Register(ctx context.Context, req *pb.Task) (t *pb.Null, err error) {
 	return
 }
